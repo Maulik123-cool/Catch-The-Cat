@@ -4,6 +4,9 @@ Catch the Cat is a fun little game where a cheeky cat keeps popping out of boxes
 
 ![image](https://github.com/user-attachments/assets/2afc9cd3-1927-46d5-8f6b-4a6286bccc3f)
 
+![image](https://github.com/user-attachments/assets/3b46840c-620b-4959-b1cc-61bcfb9a4d44)
+
+
 ![image](https://github.com/user-attachments/assets/9a3d8432-13ff-496a-a111-fe011eda649a)
 
 How to Play

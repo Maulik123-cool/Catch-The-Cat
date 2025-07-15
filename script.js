@@ -5,7 +5,7 @@ const timerDisplay = document.getElementById('timer');
 let score = 0;
 let timeLeft = 30;
 let catIndex = -1;
-let timerInterval, catTimeout;
+let timerInterval, catMoveInterval;
 
 // Create the 3x3 grid
 function createBoard() {
@@ -18,26 +18,34 @@ function createBoard() {
             if (parseInt(tile.dataset.index) === catIndex) {
                 score++;
                 scoreDisplay.innerText = `Score: ${score}`;
-                removeCat();
+                catIndex = -1; // prevent double score
             }
         };
         board.appendChild(tile);
     }
 }
 
-// Start game logic
+// Start the game
 function startGame() {
     score = 0;
     timeLeft = 30;
     scoreDisplay.innerText = `Score: ${score}`;
     timerDisplay.innerText = `Time left: ${timeLeft}s`;
     createBoard();
-    moveCat(); // start first cat
+    moveCat(); // Start the cat movement immediately
+
     clearInterval(timerInterval);
+    clearInterval(catMoveInterval);
+
     timerInterval = setInterval(updateTimer, 1000);
+
+    // Move cat every 1 second no matter what
+    catMoveInterval = setInterval(() => {
+        moveCat();
+    }, 1000);
 }
 
-// Move the cat image to a random tile
+// Show the cat in a random tile
 function moveCat() {
     removeCat();
 
@@ -47,22 +55,12 @@ function moveCat() {
     cat.src = 'cat.png';
     cat.alt = 'Cat';
     tiles[catIndex].appendChild(cat);
-
-    // Remove cat after 1 second if not clicked
-    catTimeout = setTimeout(() => {
-        removeCat();
-        if (timeLeft > 0) {
-            moveCat();
-        }
-    }, 1000);
 }
 
-// Remove current cat
+// Remove all cats
 function removeCat() {
     const tiles = document.querySelectorAll('.tile');
     tiles.forEach(tile => tile.innerHTML = '');
-    clearTimeout(catTimeout);
-    catIndex = -1;
 }
 
 // Countdown timer
@@ -72,12 +70,12 @@ function updateTimer() {
 
     if (timeLeft <= 0) {
         clearInterval(timerInterval);
-        clearTimeout(catTimeout);
+        clearInterval(catMoveInterval);
         endGame();
     }
 }
 
-// End the game
+// End game
 function endGame() {
     alert(`⏰ Time's up! You scored ${score} points.`);
     board.innerHTML = '';

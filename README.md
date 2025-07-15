@@ -2,11 +2,9 @@
 Catch the Cat is a fun little game where a cheeky cat keeps popping out of boxes, and your job is to click it before it disappears! 🐱 Every time you catch the cat, you get a point. Miss it? Oops — you lose one! It's fast, silly, and a great way to test how quick your fingers are.
 
 
-![image](https://github.com/user-attachments/assets/2afc9cd3-1927-46d5-8f6b-4a6286bccc3f)
+<img width="594" height="919" alt="image" src="https://github.com/user-attachments/assets/d8141e16-59fe-415d-a92a-05010a56cb98" />
+<img width="527" height="230" alt="image" src="https://github.com/user-attachments/assets/79c7dbba-6a65-44e3-90fa-d21fd390609b" />
 
-![image](https://github.com/user-attachments/assets/3b46840c-620b-4959-b1cc-61bcfb9a4d44)
-
-![image](https://github.com/user-attachments/assets/9a3d8432-13ff-496a-a111-fe011eda649a)
 
 ## How to Play
 

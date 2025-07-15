@@ -1,82 +1,61 @@
-const board = document.getElementById('game-board');
-const scoreDisplay = document.getElementById('score');
-const timerDisplay = document.getElementById('timer');
-
 let score = 0;
 let timeLeft = 30;
-let catIndex = -1;
-let timerInterval, catMoveInterval;
+let running = false;
+let catImg;
+let moveInterval;
+let countdownInterval;
 
-// Create the 3x3 grid
-function createBoard() {
-    board.innerHTML = '';
-    for (let i = 0; i < 9; i++) {
-        const tile = document.createElement('div');
-        tile.classList.add('tile');
-        tile.dataset.index = i;
-        tile.onclick = () => {
-            if (parseInt(tile.dataset.index) === catIndex) {
-                score++;
-                scoreDisplay.innerText = `Score: ${score}`;
-                catIndex = -1; // prevent double score
-            }
-        };
-        board.appendChild(tile);
-    }
-}
+const scoreDisplay = document.getElementById("score");
+const timerDisplay = document.getElementById("timer");
+const gameArea = document.getElementById("gameArea");
+const startBtn = document.getElementById("startBtn");
 
-// Start the game
+startBtn.addEventListener("click", startGame);
+
 function startGame() {
-    score = 0;
-    timeLeft = 30;
-    scoreDisplay.innerText = `Score: ${score}`;
-    timerDisplay.innerText = `Time left: ${timeLeft}s`;
-    createBoard();
-    moveCat(); // Start the cat movement immediately
-
-    clearInterval(timerInterval);
-    clearInterval(catMoveInterval);
-
-    timerInterval = setInterval(updateTimer, 1000);
-
-    // Move cat every 1 second no matter what
-    catMoveInterval = setInterval(() => {
-        moveCat();
-    }, 1000);
+  if (running) return;
+  running = true;
+  score = 0;
+  timeLeft = 30;
+  scoreDisplay.innerText = "Score: 0";
+  timerDisplay.innerText = "Time: 30s";
+  moveCat();
+  moveInterval = setInterval(moveCat, 800);
+  countdownInterval = setInterval(countdown, 1000);
 }
 
-// Show the cat in a random tile
 function moveCat() {
-    removeCat();
+  if (catImg) catImg.remove();
 
-    catIndex = Math.floor(Math.random() * 9);
-    const tiles = document.querySelectorAll('.tile');
-    const cat = document.createElement('img');
-    cat.src = 'cat.png';
-    cat.alt = 'Cat';
-    tiles[catIndex].appendChild(cat);
+  const x = Math.random() * (250);
+  const y = Math.random() * (250);
+
+  catImg = document.createElement("img");
+  catImg.src = "cat.png";
+  catImg.classList.add("cat");
+  catImg.style.left = `${x}px`;
+  catImg.style.top = `${y}px`;
+
+  catImg.onclick = () => {
+    if (!running) return;
+    score++;
+    scoreDisplay.innerText = `Score: ${score}`;
+    catImg.remove();
+  };
+
+  gameArea.appendChild(catImg);
 }
 
-// Remove all cats
-function removeCat() {
-    const tiles = document.querySelectorAll('.tile');
-    tiles.forEach(tile => tile.innerHTML = '');
-}
+function countdown() {
+  timeLeft--;
+  timerDisplay.innerText = `Time: ${timeLeft}s`;
 
-// Countdown timer
-function updateTimer() {
-    timeLeft--;
-    timerDisplay.innerText = `Time left: ${timeLeft}s`;
-
-    if (timeLeft <= 0) {
-        clearInterval(timerInterval);
-        clearInterval(catMoveInterval);
-        endGame();
-    }
-}
-
-// End game
-function endGame() {
-    alert(`⏰ Time's up! You scored ${score} points.`);
-    board.innerHTML = '';
+  if (timeLeft <= 0) {
+    running = false;
+    clearInterval(moveInterval);
+    clearInterval(countdownInterval);
+    if (catImg) catImg.remove();
+    scoreDisplay.innerText = `Final Score: ${score}`;
+    timerDisplay.innerText = `Time: 0s`;
+  }
 }
